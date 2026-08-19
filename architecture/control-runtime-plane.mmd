@@ -1,0 +1,16 @@
+flowchart TB
+    subgraph CP[CONTROL PLANE]
+        U[User] --> AR[Access Request Portal]
+        AR --> AW[Approval Workflow]
+        AW --> IAM[Enterprise IAM / IdM]
+        IAM -->|Provision / Deprovision| DIR[Enterprise Directory]
+    end
+
+    subgraph RP[RUNTIME PLANE]
+        DIR2[Enterprise Directory] -->|Authentication| PLT[Enterprise Platform]
+        DIR2 -->|Security Group Membership| PLT
+        PLT --> RBAC[Platform RBAC]
+        RBAC --> RES[Platform Resources]
+    end
+
+    DIR -. same logical directory .- DIR2
