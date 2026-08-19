@@ -10,14 +10,22 @@
 
 ## Social preview
 
-Рекомендуемый текст:
+Исходник обложки: [`assets/enterprise-platform-iam-social-preview.svg`](assets/enterprise-platform-iam-social-preview.svg).
 
-**Centralized IAM Integration**  
-Enterprise Platform Access Governance  
-Control Plane · RBAC · SoD · Reconciliation · Resilience
+Размер исходника — **1280×640 (2:1)**, поэтому он одновременно подходит как полноформатная обложка кейса и как основа GitHub Social Preview без боковых полей.
+
+Рекомендуемое содержимое обложки:
+
+**Централизованное управление доступом**  
+IAM · Directory · RBAC · Access Governance  
+Control / runtime separation · Role mapping · SoD · Reconciliation · Failure containment
+
+Для настройки GitHub Social Preview загрузить растровую JPG/PNG-версию 1280×640 через `Settings → General → Social preview`.
 
 ## Позиционирование
 
 **Solution Architect / Author of the Technical Solution**
+
+Главный архитектурный тезис кейса: IAM управляет жизненным циклом доступа через корпоративный каталог, но не становится обязательной runtime-зависимостью прикладной платформы.
 
 Граница происхождения и авторства публичного материала зафиксирована в [`ORIGIN.md`](ORIGIN.md).
