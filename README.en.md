@@ -4,64 +4,41 @@
 
 [Русская версия](README.md)
 
+![Case cover](assets/enterprise-platform-iam-social-preview.svg)
+
 > A synthetic public architecture case based on practical experience designing centralized access management for an enterprise platform. All names, roles, systems, groups, and data in this repository are fictional and created specifically for the portfolio.
 
 ## Executive summary
 
-An enterprise platform has its own RBAC model, while access lifecycle must be governed centrally through request, approval, provisioning, revocation, and periodic reconciliation.
+An enterprise platform owns its RBAC model while access lifecycle must be governed centrally through request, approval, provisioning, revocation and periodic reconciliation.
 
-The architectural problem is not simply to “connect the application to IAM.” It is to separate four responsibilities:
-
-- **authentication** of the user;
-- **authorization** inside the platform;
-- access **provisioning / deprovisioning**;
-- **governance** — approval, segregation of duties, audit, and reconciliation.
+The architectural problem is not simply to “connect the application to IAM.” It is to separate **authentication**, **authorization**, **provisioning/deprovisioning**, and **access governance**.
 
 Core principle:
 
 > **IAM manages access state but does not become a mandatory runtime dependency of the business platform.**
 
-This reduces coupling: an IAM outage can temporarily stop new access assignments and revocations, but should not automatically block existing users while the enterprise directory and platform remain available.
+This reduces coupling: an IAM outage can temporarily stop new assignments and revocations but should not automatically block existing users while the enterprise directory and platform remain available.
 
 ## My role
 
 **Solution Architect / Author of the Technical Solution**
 
-Responsibilities represented in the case:
+Responsibilities represented by this case include control/runtime separation, directory-group-to-role mapping, access lifecycle, Segregation of Duties, IAM failure behavior, access reconciliation and architecture acceptance criteria.
 
-- architecture of centralized access-management integration;
-- separation of control plane and runtime plane;
-- mapping between directory groups and application roles;
-- access request and revocation lifecycle;
-- Segregation of Duties (SoD) rules;
-- failure behavior when IAM is unavailable;
-- access reconciliation and governance controls;
-- architecture acceptance criteria.
-
-The public origin and authorship boundary is documented in [ORIGIN.md](ORIGIN.md).
+The origin and authorship boundary is documented in [ORIGIN.md](ORIGIN.md).
 
 ## 1. Control Plane vs Runtime Plane
 
-```mermaid
-flowchart TB
-    subgraph CP[CONTROL PLANE — access lifecycle management]
-        U[User] --> AR[Access Request Portal]
-        AR --> AW[Approval Workflow]
-        AW --> IAM[Enterprise IAM / IdM]
-        IAM -->|Provision / Deprovision| DIR[Enterprise Directory]
-    end
+![Control Plane and Runtime Plane](assets/control-runtime-architecture.svg)
 
-    subgraph RP[RUNTIME PLANE — platform access]
-        DIR2[Enterprise Directory] -->|Authentication| PLT[Enterprise Platform]
-        DIR2 -->|Security Group Membership| PLT
-        PLT --> RBAC[Platform RBAC]
-        RBAC --> RES[Platform Resources]
-    end
+**Control plane:** request → approval → IAM → enterprise-directory group membership.
 
-    DIR -. same enterprise directory .- DIR2
-```
+**Runtime plane:** user → enterprise directory → enterprise platform → RBAC.
 
-**Architecture boundary:** IAM changes user membership in enterprise-directory security groups. The platform interprets those groups as roles. Direct runtime communication `Platform → IAM` is not required.
+The stable architecture boundary is the **directory security group**. IAM manages membership; the platform maps the group to its application role. Direct runtime communication `Platform → IAM` is not required.
+
+See [Architecture](docs/architecture.md).
 
 ## 2. Access model
 
@@ -82,13 +59,14 @@ Governance
 Role Catalogue → SoD Rules → Reconciliation → Review
 ```
 
-## 3. Directory-group to role mapping
+## 3. Role Governance and Segregation of Duties
 
-```mermaid
-flowchart LR
-    IAM[Enterprise IAM] --> G[Directory Group]
-    G --> R[Platform Role]
-    R --> P[Permissions]
+![Role governance](assets/role-governance.svg)
+
+The platform does not receive arbitrary low-level permissions directly from IAM. The stable contract is:
+
+```text
+IAM Entitlement → Directory Group → Platform Role → Permissions
 ```
 
 Synthetic example:
@@ -102,51 +80,25 @@ Synthetic example:
 | PLT-TST-OPS | Platform Operator | TEST | test operations |
 | PLT-TST-TESTER | Tester | TEST | functional testing |
 
-See [data/role-catalog.csv](data/role-catalog.csv).
+Synthetic data: [role catalogue](data/role-catalog.csv) · [SoD matrix](data/sod-matrix.csv) · [access requests](data/access-request-examples.csv).
 
-## 4. Access lifecycle
+## 4. Governed access lifecycle
 
-```mermaid
-flowchart LR
-    RQ[Request] --> AP[Approval]
-    AP --> PR[Provision]
-    PR --> US[Use]
-    US --> RC[Reconciliation]
-    RC --> RV[Review]
-    RV -->|Retain| US
-    RV -->|Revoke| DP[Deprovision]
-```
+![Access lifecycle](assets/access-lifecycle.svg)
 
-## 5. Segregation of Duties
+**Request → Approval → Provision → Use → Reconciliation → Review → Revoke/Retain**.
 
-```mermaid
-flowchart LR
-    PA[Platform Administrator] --- X1{{X}}
-    X1 --- AC[Access Controller]
-    SA[Security Administrator] --- X2{{X}}
-    X2 --- AC
-    IA[Integration Administrator] --- X3{{X}}
-    X3 --- IS[Integration Security Administrator]
-```
+Access remains traceable after provisioning and can be reviewed and centrally revoked.
 
-Synthetic conflict matrix: [data/sod-matrix.csv](data/sod-matrix.csv).
+## 5. IAM failure containment
 
-## 6. IAM failure behavior
+![IAM failure containment](assets/iam-failure-model.svg)
 
-```mermaid
-flowchart TB
-    FAIL[IAM unavailable]
-    FAIL --> NEW[New assignment: unavailable / queued]
-    FAIL --> CHG[Change or revoke: unavailable / controlled exception]
+IAM belongs to the **control plane**, so its failure should not unnecessarily propagate to runtime access. Normal assignments, changes and revocations degrade; existing governed access continues while the directory and platform remain healthy; exceptional manual changes must be reconciled after recovery.
 
-    EU[Existing user] --> DIR[Enterprise Directory available]
-    DIR --> PLT[Enterprise Platform available]
-    PLT --> OK[Existing access continues]
-```
+See [Resilience & Controls](docs/resilience-and-controls.md).
 
-IAM belongs to the **control plane**, so its failure should not unnecessarily propagate to the runtime business platform.
-
-## 7. Reconciliation
+## 6. Reconciliation
 
 ```text
 Approved Entitlements
@@ -154,16 +106,17 @@ Approved Entitlements
         ▼
 Expected Directory Membership
         │
-        ▼
+        ▼ compare
 Actual Directory Membership
         │
         ▼
 Resolved Platform Roles
         │
         ▼
-Reconciliation Result
-   MATCH / DRIFT / ORPHAN
+MATCH / MISSING / DRIFT / ORPHAN / CONFLICT
 ```
+
+Reconciliation detects manual drift, incomplete revocation, provisioning errors and orphaned mappings.
 
 ## Architecture decisions
 
@@ -177,15 +130,15 @@ Reconciliation Result
 
 | Area | Content |
 |---|---|
-| [Context & Drivers](docs/context-and-drivers.md) | problem, constraints, architecture drivers |
+| [Context & Drivers](docs/context-and-drivers.md) | problem, constraints and drivers |
 | [Architecture](docs/architecture.md) | control plane, runtime plane and integration boundaries |
 | [Access Lifecycle](docs/access-lifecycle.md) | request → approval → provision → review → revoke |
 | [Role Governance](docs/role-governance.md) | role catalogue, mapping and SoD |
 | [Resilience & Controls](docs/resilience-and-controls.md) | IAM outages, exceptions and reconciliation |
 | [Lessons Learned](docs/lessons-learned.md) | generalized architecture lessons |
 | [Architecture Decisions](decisions/) | five ADRs |
-| [Synthetic Data](data/) | fictional role mapping, SoD and request examples |
-| [Governance](governance/) | checklists and reconciliation controls |
+| [Synthetic Data](data/) | fictional role mapping, SoD and access requests |
+| [Governance](governance/) | readiness checklist and reconciliation model |
 | [Architecture Sources](architecture/) | Mermaid diagram sources |
 
 ## Disclaimer
