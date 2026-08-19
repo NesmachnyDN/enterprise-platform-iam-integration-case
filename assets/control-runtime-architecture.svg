@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+<title id="title">Control Plane and Runtime Plane</title><desc id="desc">IAM control plane separated from enterprise platform runtime authorization</desc>
+<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f6f9fc"/><stop offset="1" stop-color="#e8f1fb"/></linearGradient><marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#315f91"/></marker></defs>
+<rect width="1280" height="720" rx="28" fill="url(#bg)"/>
+<g font-family="Arial,Helvetica,sans-serif"><text x="60" y="68" font-size="34" font-weight="700" fill="#12375f">IAM Integration Architecture</text><text x="60" y="103" font-size="19" fill="#46698d">Access lifecycle in the control plane · authorization in the runtime plane</text>
+<rect x="55" y="135" width="1170" height="230" rx="24" fill="#e7f1fb" stroke="#6da4d6" stroke-width="2"/><text x="82" y="172" font-size="20" font-weight="700" fill="#174b7b">CONTROL PLANE</text>
+<rect x="90" y="222" width="170" height="72" rx="16" fill="#fff" stroke="#6da4d6"/><rect x="330" y="222" width="180" height="72" rx="16" fill="#fff" stroke="#6da4d6"/><rect x="585" y="222" width="180" height="72" rx="16" fill="#d9ecff" stroke="#347ab7" stroke-width="2"/><rect x="850" y="222" width="230" height="72" rx="16" fill="#fff" stroke="#6da4d6"/>
+<text x="130" y="264" font-size="18" font-weight="700" fill="#173f66">Access Request</text><text x="371" y="264" font-size="18" font-weight="700" fill="#173f66">Approval Workflow</text><text x="634" y="264" font-size="18" font-weight="700" fill="#12375f">Enterprise IAM</text><text x="888" y="254" font-size="18" font-weight="700" fill="#173f66">Enterprise Directory</text><text x="911" y="278" font-size="14" fill="#57718c">security groups</text>
+<path d="M260 258h70M510 258h75M765 258h85" stroke="#315f91" stroke-width="3" marker-end="url(#a)"/>
+<text x="780" y="210" font-size="14" fill="#57718c">provision / deprovision</text>
+<rect x="55" y="405" width="1170" height="240" rx="24" fill="#f1f7fd" stroke="#6da4d6" stroke-width="2"/><text x="82" y="442" font-size="20" font-weight="700" fill="#174b7b">RUNTIME PLANE</text>
+<rect x="120" y="505" width="230" height="76" rx="16" fill="#fff" stroke="#6da4d6"/><rect x="520" y="505" width="220" height="76" rx="16" fill="#d9ecff" stroke="#347ab7" stroke-width="2"/><rect x="910" y="505" width="170" height="76" rx="16" fill="#fff" stroke="#6da4d6"/>
+<text x="158" y="537" font-size="18" font-weight="700" fill="#173f66">Enterprise Directory</text><text x="167" y="560" font-size="14" fill="#57718c">identity + groups</text><text x="558" y="539" font-size="18" font-weight="700" fill="#12375f">Enterprise Platform</text><text x="594" y="562" font-size="14" fill="#57718c">role mapping</text><text x="966" y="548" font-size="18" font-weight="700" fill="#173f66">RBAC</text>
+<path d="M350 543h170M740 543h170" stroke="#315f91" stroke-width="3" marker-end="url(#a)"/>
+<path d="M965 294v111" stroke="#315f91" stroke-width="2" stroke-dasharray="8 7" marker-end="url(#a)"/><text x="983" y="357" font-size="14" fill="#57718c">shared directory</text>
+<path d="M665 294v88" stroke="#bc5a5a" stroke-width="2" stroke-dasharray="7 7"/><text x="685" y="341" font-size="14" font-weight="700" fill="#a43f3f">NO runtime call</text>
+</g></svg>
