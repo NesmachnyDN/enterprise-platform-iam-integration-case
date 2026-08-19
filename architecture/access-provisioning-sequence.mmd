@@ -1,0 +1,17 @@
+sequenceDiagram
+    actor User
+    participant Portal as Access Request Portal
+    participant Approval as Approval Workflow
+    participant IAM as Enterprise IAM
+    participant Directory as Enterprise Directory
+    participant Platform as Enterprise Platform
+
+    User->>Portal: Request platform role
+    Portal->>Approval: Start approval
+    Approval-->>IAM: Approved entitlement
+    IAM->>Directory: Add user to security group
+    Directory-->>IAM: Membership updated
+    User->>Platform: Authenticate / open platform
+    Platform->>Directory: Resolve identity and groups
+    Directory-->>Platform: User + group membership
+    Platform-->>User: Authorized capabilities
