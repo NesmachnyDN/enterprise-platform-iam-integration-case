@@ -1,0 +1,8 @@
+role_a,role_b,environment,rule,rationale
+Platform Administrator,Security Administrator,PROD,DENY,Separate operational and security administration
+Platform Administrator,Access Controller,PROD,DENY,Controller must remain independent from platform administration
+Security Administrator,Access Controller,PROD,DENY,Controller must remain independent from security administration
+Integration Administrator,Integration Security Administrator,PROD,DENY,Separate functional and security administration of integrations
+Integration Administrator,Access Controller,PROD,DENY,Controller must not review own privileged changes
+Platform Administrator,Security Administrator,TEST,WARN,Test environment may allow exception only through explicit approval
+Integration Administrator,Integration Security Administrator,TEST,WARN,Test exception requires explicit time-bounded approval
