@@ -1,0 +1,9 @@
+flowchart LR
+    RQ[Request] --> AP[Approval]
+    AP --> PR[Provision]
+    PR --> US[Use]
+    US --> RC[Reconciliation]
+    RC --> RV[Review]
+    RV -->|Retain| US
+    RV -->|Revoke| DP[Deprovision]
+    DP --> CL[Closed]
