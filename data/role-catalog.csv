@@ -1,0 +1,11 @@
+entitlement_id,environment,directory_group,platform_role,owner,privilege_class,approval_profile,description
+ENT-001,PROD,EP-PRD-PLATFORM-ADMIN,Platform Administrator,Platform Operations,Privileged,PRIV-OPS,Platform configuration and operational administration
+ENT-002,PROD,EP-PRD-SECURITY-ADMIN,Security Administrator,Security Operations,Privileged,PRIV-SEC,Security configuration and policy administration
+ENT-003,PROD,EP-PRD-INTEGRATION-ADMIN,Integration Administrator,Integration Operations,Privileged,PRIV-OPS,Integration object configuration
+ENT-004,PROD,EP-PRD-INTEGRATION-SEC,Integration Security Administrator,Security Operations,Privileged,PRIV-SEC,Security controls for integration objects
+ENT-005,PROD,EP-PRD-ACCESS-CONTROLLER,Access Controller,Access Governance,Control,CONTROL,Independent access review and reconciliation
+ENT-006,PROD,EP-PRD-INTEGRATION-OWNER,Integration Owner,Application Ownership,Business,OWNER,Own integration configuration and approvals
+ENT-007,TEST,EP-TST-PLATFORM-ADMIN,Platform Administrator,Platform Operations,Privileged,TEST-OPS,Administration of test environment
+ENT-008,TEST,EP-TST-SECURITY-ADMIN,Security Administrator,Security Operations,Privileged,TEST-SEC,Security administration of test environment
+ENT-009,TEST,EP-TST-INTEGRATION-ADMIN,Integration Administrator,Integration Operations,Privileged,TEST-OPS,Integration configuration in test
+ENT-010,TEST,EP-TST-TESTER,Tester,Quality Engineering,Standard,TEST-USER,Functional testing access
