@@ -1,0 +1,13 @@
+flowchart LR
+    IAM[Enterprise IAM] -->|approved entitlement| G[Directory Group]
+    G --> R[Platform Role]
+    R --> P[Permissions]
+
+    subgraph Governance
+        C[Role Catalogue]
+        S[SoD Rules]
+    end
+
+    C --> G
+    C --> R
+    S --> IAM
