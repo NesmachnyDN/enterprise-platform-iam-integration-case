@@ -1,0 +1,7 @@
+request_id,target_user,environment,requested_entitlement,justification,approval_path,status,provisioning_result
+REQ-001,user-a,TEST,ENT-010,Functional test cycle,Manager>Test Owner,APPROVED,PROVISIONED
+REQ-002,user-b,PROD,ENT-003,Operate production integration routes,Manager>Security>Platform Owner,APPROVED,PROVISIONED
+REQ-003,user-c,PROD,ENT-005,Quarterly access review duties,Manager>Security>Governance Owner,APPROVED,PROVISIONED
+REQ-004,user-b,PROD,ENT-005,Review own operational scope,Manager>Security>Governance Owner,REJECTED_SOD,NOT_PROVISIONED
+REQ-005,user-d,PROD,ENT-002,Temporary security maintenance,Manager>Security Owner,APPROVED,PROVISIONED_TEMPORARY
+REQ-006,user-e,PROD,ENT-001,Platform operational administration,Manager>Security>Platform Owner,PENDING,NOT_PROVISIONED
