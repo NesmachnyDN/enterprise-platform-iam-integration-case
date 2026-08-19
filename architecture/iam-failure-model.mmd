@@ -1,0 +1,9 @@
+flowchart TB
+    FAIL[IAM unavailable]
+    FAIL --> NEW[New assignment: paused / queued]
+    FAIL --> CHG[Role change: paused]
+    FAIL --> REV[Normal revocation: paused / contingency if required]
+
+    EU[Existing user] --> DIR[Enterprise Directory available]
+    DIR --> PLT[Enterprise Platform available]
+    PLT --> OK[Existing governed access continues]
