@@ -1,0 +1,8 @@
+flowchart LR
+    R[Requester] --> M[Management Approval]
+    M --> S[Security Approval]
+    S --> O{Resource owner differs?}
+    O -->|Yes| AO[Application / Resource Owner]
+    O -->|No| IAM[IAM Execution]
+    AO --> IAM
+    IAM --> D[Directory Group Membership]
