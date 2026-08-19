@@ -1,0 +1,6 @@
+flowchart TB
+    FAIL[IAM unavailable]
+    FAIL --> NEW[New grant / change / revoke degraded]
+    EXISTING[Existing user] --> DIR[Enterprise Directory available]
+    DIR --> PLT[Enterprise Platform available]
+    PLT --> OK[Existing access continues]
